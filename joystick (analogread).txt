@@ -1,0 +1,42 @@
+
+#define STX A1
+#define STY A0
+ 
+const byte stk_pins [2] = {STX, STY};
+ 
+void setup() {
+  for (byte i = 0 ; i < 2 ; i++) pinMode(stk_pins[i], INPUT);
+  Serial.begin(38400);
+}
+ 
+void loop() {
+  Serial.print("X:");
+  Serial.print(analogRead(stk_pins[0]));
+  Serial.print("  Y:");
+  Serial.print(analogRead(stk_pins[1]));
+  Serial.println();
+}
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+中心を値に＋－表現するために最大値であるβ（仮に名付けただけ自分で判断）である半分を引く、
+ついでに揺らぎ低減のために10％更新
+void loop() {
+  static short vr[2];
+ 
+  for (byte i = 0 ; i < 2 ; i++)
+  {
+    vr[i] = vr[i] * 0.9 + (analogRead(stk_pins[i]) - β / 2) * 0.1;
+  }
+ 
+  Serial.print("X:");
+  Serial.print(analogRead(stk_pins[0]));
+  Serial.print("  Y:");
+  Serial.print(analogRead(stk_pins[1]));
+ 
+  Serial.print("    x:");
+  Serial.print(vr[0]);
+  Serial.print("  y:");
+  Serial.print(vr[1]);
+  Serial.println();
+}
